@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-b2b4b82a-b03e-4c03-81e6-c9f757f9973d/styles.css">
+<script src="_ds/industry-b2b4b82a-b03e-4c03-81e6-c9f757f9973d/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap">
+<style>
+body{margin:0;background:#e4e4e6;font-family:"Barlow",system-ui,sans-serif;color:#1d1f20}
+a{color:var(--color-accent-700);text-decoration:none}
+a:hover{color:var(--color-accent-800)}
+.dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(0,0,0,.1)}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1d1f20;color:#f2f2f3;border-radius:0;text-decoration:none}
+.dv-tname{font:600 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#1d1f20}
+.dv-note{margin:0 0 26px;max-width:70ch;font:400 13px/1.6 "Barlow",sans-serif;color:rgba(29,31,32,.62)}
+.dv-opts{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(29,31,32,.1);color:#1d1f20;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:9px;font:400 12px/1.4 "Barlow",sans-serif;color:rgba(29,31,32,.6);max-width:412px}
+.dv-opt:target .dv-oid{background:var(--color-accent);color:#fff}
+.dv-next{margin:26px 0 0;font:12px/1.6 "Barlow",sans-serif;color:rgba(29,31,32,.5)}
+input[type=range]{accent-color:var(--color-accent)}
+.gi-num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Gratuit-inator · three directions</span></div>
+<p class="dv-note">All three are live: type a subtotal, tap presets, round to a whole dollar, step by $1, change the split, run the scan flow. Built on the Industry system (steel accent, Barlow Condensed, hairline blueprint framing). Split shows per-person total only, per your call.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Spec Sheet — light ground, typed fields, every number on one screen. The restrained, by-the-book read of the system.</div>
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" hint-size="412px,892px">
+<div style="min-height:100%;background:#f2f2f3;display:flex;flex-direction:column;font-family:'Barlow',sans-serif">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid rgba(29,31,32,.16)">
+    <div style="font:700 21px/1 'Barlow Condensed',sans-serif;letter-spacing:.11em;text-transform:uppercase">Gratuit-inator</div>
+    <div style="font:500 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#416180;border:1px solid rgba(29,31,32,.2);padding:4px 6px">no ads</div>
+  </div>
+
+  <sc-if value="{{ a.isMain }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;padding:22px 20px 16px;display:flex;flex-direction:column;gap:26px">
+    <div class="blueprint" style="padding:16px 14px;display:flex;flex-direction:column;gap:14px">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="display:flex;gap:14px">
+        <label style="flex:1.4;min-width:0;display:flex;flex-direction:column;gap:6px">
+          <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Subtotal</span>
+          <div style="min-width:0;display:flex;align-items:baseline;gap:4px;border-bottom:1.5px solid #1d1f20;padding-bottom:5px">
+            <span style="font:400 17px/1 'Barlow',sans-serif;color:rgba(29,31,32,.5)">$</span>
+            <input class="gi-num" inputmode="decimal" value="{{ a.sub }}" onChange="{{ a.onSub }}" placeholder="0.00" style="flex:1;width:100%;min-width:0;border:0;background:transparent;padding:0;font:600 30px/1 'Barlow Semi Condensed',sans-serif;color:#1d1f20;outline:none">
+          </div>
+        </label>
+        <label style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;opacity:{{ a.taxOpacity }}">
+          <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Tax</span>
+          <div style="min-width:0;display:flex;align-items:baseline;gap:4px;border-bottom:1.5px solid rgba(29,31,32,.35);padding-bottom:5px">
+            <span style="font:400 17px/1 'Barlow',sans-serif;color:rgba(29,31,32,.5)">$</span>
+            <input class="gi-num" inputmode="decimal" value="{{ a.tax }}" onChange="{{ a.onTax }}" disabled="{{ a.full }}" placeholder="0.00" style="flex:1;width:100%;min-width:0;border:0;background:transparent;padding:0;font:600 30px/1 'Barlow Semi Condensed',sans-serif;color:#1d1f20;outline:none">
+          </div>
+        </label>
+      </div>
+      <div onClick="{{ a.toggleFull }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;min-height:44px">
+        <span style="width:19px;height:19px;flex:none;border:1.5px solid #1d1f20;display:flex;align-items:center;justify-content:center;background:{{ a.boxBg }};color:#f2f2f3;font:700 13px/1 'Barlow',sans-serif">{{ a.boxMark }}</span>
+        <span style="font:400 14px/1.3 'Barlow',sans-serif">Use full bill amount</span>
+      </div>
+      <div style="font:400 11.5px/1.45 'Barlow',sans-serif;color:rgba(29,31,32,.55)">{{ a.fullHint }}</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Tip</span>
+        <span class="gi-num" style="font:500 12px/1 'Barlow',sans-serif;color:#416180">{{ a.pctFmt }} · {{ a.pctLabel }}</span>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button onClick="{{ a.pct15 }}" style="flex:1;min-height:46px;border:1px solid {{ a.b15 }};background:{{ a.f15 }};color:{{ a.t15 }};font:600 16px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">15%</button>
+        <button onClick="{{ a.pct18 }}" style="flex:1;min-height:46px;border:1px solid {{ a.b18 }};background:{{ a.f18 }};color:{{ a.t18 }};font:600 16px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">18%</button>
+        <button onClick="{{ a.pct20 }}" style="flex:1;min-height:46px;border:1px solid {{ a.b20 }};background:{{ a.f20 }};color:{{ a.t20 }};font:600 16px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">20%</button>
+        <button onClick="{{ a.pct25 }}" style="flex:1;min-height:46px;border:1px solid {{ a.b25 }};background:{{ a.f25 }};color:{{ a.t25 }};font:600 16px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">25%</button>
+      </div>
+      <input type="range" min="0" max="40" step="1" value="{{ a.pct }}" onChange="{{ a.onPct }}" style="width:100%;height:44px;margin:0">
+    </div>
+
+    <div class="blueprint" style="padding:15px 14px;display:flex;flex-direction:column;gap:9px">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;font:400 13.5px/1 'Barlow',sans-serif;color:rgba(29,31,32,.7)"><span>Subtotal</span><span class="gi-num">{{ a.subFmt }}</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;font:400 13.5px/1 'Barlow',sans-serif;color:rgba(29,31,32,.7)"><span>Tax</span><span class="gi-num">{{ a.taxFmt }}</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;font:400 13.5px/1 'Barlow',sans-serif;color:rgba(29,31,32,.7)"><span>Tip</span><span class="gi-num">{{ a.tipFmt }}</span></div>
+      <div style="height:1px;background:rgba(29,31,32,.16);margin:3px 0"></div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <span style="font:600 11px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding-bottom:6px">Grand total</span>
+        <span class="gi-num" style="font:600 40px/1 'Barlow Semi Condensed',sans-serif;letter-spacing:-.01em">{{ a.grandFmt }}</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Land on a whole dollar</span>
+        <span style="font:400 11px/1 'Barlow',sans-serif;color:rgba(29,31,32,.45)">{{ a.adjNote }}</span>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button onClick="{{ a.roundDown }}" style="flex:1.3;min-height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:600 14px/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Round ↓</button>
+        <button onClick="{{ a.roundUp }}" style="flex:1.3;min-height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:600 14px/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Round ↑</button>
+        <button onClick="{{ a.minus1 }}" style="flex:1;min-height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">−$1</button>
+        <button onClick="{{ a.plus1 }}" style="flex:1;min-height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">+$1</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(29,31,32,.16);padding-top:16px">
+      <div>
+        <div style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62);margin-bottom:5px">Split {{ a.splitLabel }}</div>
+        <div class="gi-num" style="font:600 24px/1 'Barlow Semi Condensed',sans-serif">{{ a.perFmt }} <span style="font:400 12px/1 'Barlow',sans-serif;color:rgba(29,31,32,.55)">each</span></div>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button onClick="{{ a.splitDown }}" style="width:48px;height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:400 20px/1 'Barlow',sans-serif;cursor:pointer">−</button>
+        <button onClick="{{ a.splitUp }}" style="width:48px;height:48px;border:1px solid rgba(29,31,32,.28);background:transparent;font:400 20px/1 'Barlow',sans-serif;cursor:pointer">+</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ a.isScan }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;background:#1d2d3d">
+    <div style="flex:1;position:relative;margin:20px;border:1px solid rgba(242,242,243,.35);background:repeating-linear-gradient(0deg,rgba(242,242,243,.06) 0 2px,transparent 2px 9px)">
+      <i class="corner tl" style="color:#94bce3"></i><i class="corner tr" style="color:#94bce3"></i><i class="corner bl" style="color:#94bce3"></i><i class="corner br" style="color:#94bce3"></i>
+      <div style="position:absolute;left:0;right:0;bottom:20px;text-align:center;font:400 12px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.7)">Fit the receipt inside the frame</div>
+    </div>
+    <div style="padding:0 20px 22px;display:flex;flex-direction:column;gap:14px">
+      <div style="font:400 11.5px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.6);text-align:center">Read on-device. Nothing leaves your phone.</div>
+      <button onClick="{{ a.capture }}" class="blueprint" style="min-height:56px;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;font:600 15px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">
+        <i class="corner tl" style="color:#d6ebff"></i><i class="corner tr" style="color:#d6ebff"></i><i class="corner bl" style="color:#d6ebff"></i><i class="corner br" style="color:#d6ebff"></i>Capture
+      </button>
+      <button onClick="{{ a.capture }}" style="min-height:48px;border:1px solid rgba(242,242,243,.3);background:transparent;color:#f2f2f3;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Pick from gallery</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ a.isReview }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:22px 20px;display:flex;flex-direction:column;gap:20px">
+    <div>
+      <div style="font:600 19px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase">Check the read</div>
+      <div style="font:400 13px/1.5 'Barlow',sans-serif;color:rgba(29,31,32,.62);margin-top:4px">Nothing is committed until you confirm.</div>
+    </div>
+    <div class="blueprint" style="padding:16px 14px;display:flex;flex-direction:column;gap:16px">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <label style="display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Subtotal — read as</span>
+        <div style="min-width:0;display:flex;align-items:baseline;gap:4px;border-bottom:1.5px solid #1d1f20;padding-bottom:5px">
+          <span style="font:400 16px/1 'Barlow',sans-serif;color:rgba(29,31,32,.5)">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ a.scanSub }}" onChange="{{ a.onScanSub }}" style="flex:1;width:100%;min-width:0;border:0;background:transparent;padding:0;font:600 27px/1 'Barlow Semi Condensed',sans-serif;outline:none">
+        </div>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#416180">Tax — couldn't read this</span>
+        <div style="min-width:0;display:flex;align-items:baseline;gap:4px;border-bottom:1.5px solid #5980a6;padding-bottom:5px">
+          <span style="font:400 16px/1 'Barlow',sans-serif;color:rgba(29,31,32,.5)">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ a.scanTax }}" onChange="{{ a.onScanTax }}" placeholder="enter manually" style="flex:1;width:100%;min-width:0;border:0;background:transparent;padding:0;font:600 27px/1 'Barlow Semi Condensed',sans-serif;outline:none">
+        </div>
+      </label>
+    </div>
+    <div style="font:400 11.5px/1.5 'Barlow',sans-serif;color:rgba(29,31,32,.55)">Tip lines printed on the receipt are ignored.</div>
+    <div style="display:flex;gap:9px;margin-top:auto">
+      <button onClick="{{ a.goScan }}" style="flex:1;min-height:52px;border:1px solid rgba(29,31,32,.28);background:transparent;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Retake</button>
+      <button onClick="{{ a.confirm }}" class="blueprint" style="flex:1.6;min-height:52px;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">
+        <i class="corner tl" style="color:#d6ebff"></i><i class="corner tr" style="color:#d6ebff"></i><i class="corner bl" style="color:#d6ebff"></i><i class="corner br" style="color:#d6ebff"></i>Use these
+      </button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ a.isSplit }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:24px 20px;display:flex;flex-direction:column;gap:24px">
+    <div style="font:600 19px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase">Split the damage</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <button onClick="{{ a.splitDown }}" style="width:56px;height:56px;border:1px solid rgba(29,31,32,.28);background:transparent;font:400 24px/1 'Barlow',sans-serif;cursor:pointer">−</button>
+      <div style="text-align:center">
+        <div class="gi-num" style="font:600 46px/1 'Barlow Semi Condensed',sans-serif">{{ a.split }}</div>
+        <div style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">people</div>
+      </div>
+      <button onClick="{{ a.splitUp }}" style="width:56px;height:56px;border:1px solid rgba(29,31,32,.28);background:transparent;font:400 24px/1 'Barlow',sans-serif;cursor:pointer">+</button>
+    </div>
+    <div class="blueprint" style="padding:20px 16px;text-align:center">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,31,32,.62)">Each person pays</div>
+      <div class="gi-num" style="font:600 54px/1.05 'Barlow Semi Condensed',sans-serif;margin-top:8px">{{ a.perFmt }}</div>
+      <div class="gi-num" style="font:400 12.5px/1 'Barlow',sans-serif;color:rgba(29,31,32,.55);margin-top:6px">{{ a.grandFmt }} total</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;border-top:1px solid rgba(29,31,32,.16);background:#f2f2f3">
+    <button onClick="{{ a.goMain }}" style="flex:1;min-height:56px;border:0;border-top:2px solid {{ a.navMain }};background:transparent;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Bill</button>
+    <button onClick="{{ a.goSplit }}" style="flex:1;min-height:56px;border:0;border-top:2px solid {{ a.navSplit }};background:transparent;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Split</button>
+    <button onClick="{{ a.goScan }}" style="flex:1;min-height:56px;border:0;border-top:2px solid {{ a.navScan }};background:transparent;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Scan</button>
+    <button style="flex:1;min-height:56px;border:0;border-top:2px solid transparent;background:transparent;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(29,31,32,.6);cursor:pointer">Support ↗</button>
+  </div>
+</div>
+</x-import>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Night Deck — steel field, total set huge at the top, all input in the bottom third for one-handed use in a dim room. Its own keypad, no OS keyboard.</div>
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" hint-size="412px,892px">
+<div style="min-height:100%;background:#1d2d3d;display:flex;flex-direction:column;color:#f2f2f3;font-family:'Barlow',sans-serif">
+
+  <sc-if value="{{ b.isMain }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div style="padding:26px 22px 20px;display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font:600 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.55)">Grand total</span>
+        <span class="gi-num" style="font:500 11px/1 'Barlow',sans-serif;color:#94bce3">{{ b.pctFmt }} {{ b.pctLabel }}</span>
+      </div>
+      <div class="gi-num" style="font:600 66px/1 'Barlow Semi Condensed',sans-serif;letter-spacing:-.02em">{{ b.grandFmt }}</div>
+      <div class="gi-num" style="font:400 13px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.6)">{{ b.breakdown }}</div>
+    </div>
+
+    <div style="display:flex;gap:10px;padding:0 22px 18px">
+      <button onClick="{{ b.tabSub }}" style="flex:1.3;text-align:left;padding:12px 13px;border:1px solid {{ b.subBorder }};background:{{ b.subFill }};color:#f2f2f3;cursor:pointer">
+        <div style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.6)">Subtotal</div>
+        <div class="gi-num" style="font:600 26px/1.2 'Barlow Semi Condensed',sans-serif">{{ b.subFmt }}</div>
+      </button>
+      <button onClick="{{ b.tabTax }}" disabled="{{ b.full }}" style="flex:1;text-align:left;padding:12px 13px;border:1px solid {{ b.taxBorder }};background:{{ b.taxFill }};color:#f2f2f3;opacity:{{ b.taxOpacity }};cursor:pointer">
+        <div style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.6)">Tax</div>
+        <div class="gi-num" style="font:600 26px/1.2 'Barlow Semi Condensed',sans-serif">{{ b.taxFmt }}</div>
+      </button>
+    </div>
+
+    <div onClick="{{ b.toggleFull }}" style="display:flex;align-items:center;gap:9px;padding:0 22px;min-height:44px;cursor:pointer">
+      <span style="width:19px;height:19px;flex:none;border:1.5px solid rgba(242,242,243,.7);display:flex;align-items:center;justify-content:center;background:{{ b.boxBg }};color:#1d2d3d;font:700 13px/1 'Barlow',sans-serif">{{ b.boxMark }}</span>
+      <span style="font:400 13.5px/1.3 'Barlow',sans-serif;color:rgba(242,242,243,.85)">Use full bill amount — tip on everything</span>
+    </div>
+
+    <div style="margin:16px 22px 0;height:1px;background:rgba(242,242,243,.18)"></div>
+
+    <div style="padding:16px 22px 0;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ b.pct15 }}" style="flex:1;min-height:50px;border:1px solid {{ b.b15 }};background:{{ b.f15 }};color:{{ b.t15 }};font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">15</button>
+        <button onClick="{{ b.pct18 }}" style="flex:1;min-height:50px;border:1px solid {{ b.b18 }};background:{{ b.f18 }};color:{{ b.t18 }};font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">18</button>
+        <button onClick="{{ b.pct20 }}" style="flex:1;min-height:50px;border:1px solid {{ b.b20 }};background:{{ b.f20 }};color:{{ b.t20 }};font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">20</button>
+        <button onClick="{{ b.pct25 }}" style="flex:1;min-height:50px;border:1px solid {{ b.b25 }};background:{{ b.f25 }};color:{{ b.t25 }};font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">25</button>
+        <div style="flex:1.1;min-height:50px;border:1px solid rgba(242,242,243,.22);display:flex;align-items:center;justify-content:center;font:600 15px/1 'Barlow Semi Condensed',sans-serif;color:rgba(242,242,243,.8)">{{ b.pctBadge }}</div>
+      </div>
+      <input type="range" min="0" max="40" step="1" value="{{ b.pct }}" onChange="{{ b.onPct }}" style="width:100%;height:44px;margin:0">
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ b.roundDown }}" style="flex:1;min-height:52px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">↓ Whole $</button>
+        <button onClick="{{ b.roundUp }}" style="flex:1;min-height:52px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">↑ Whole $</button>
+        <button onClick="{{ b.minus1 }}" style="width:64px;min-height:52px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">−$1</button>
+        <button onClick="{{ b.plus1 }}" style="width:64px;min-height:52px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:600 17px/1 'Barlow Semi Condensed',sans-serif;cursor:pointer">+$1</button>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;padding:20px 22px 8px">
+      <div style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.55);margin-bottom:9px">Entering {{ b.activeLabel }}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <button onClick="{{ b.k1 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">1</button>
+        <button onClick="{{ b.k2 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">2</button>
+        <button onClick="{{ b.k3 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">3</button>
+        <button onClick="{{ b.k4 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">4</button>
+        <button onClick="{{ b.k5 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">5</button>
+        <button onClick="{{ b.k6 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">6</button>
+        <button onClick="{{ b.k7 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">7</button>
+        <button onClick="{{ b.k8 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">8</button>
+        <button onClick="{{ b.k9 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">9</button>
+        <button onClick="{{ b.kdot }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">.</button>
+        <button onClick="{{ b.k0 }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 23px/1 'Barlow',sans-serif;cursor:pointer">0</button>
+        <button onClick="{{ b.kdel }}" style="min-height:54px;border:1px solid rgba(242,242,243,.16);background:rgba(242,242,243,.05);color:#f2f2f3;font:500 19px/1 'Barlow',sans-serif;cursor:pointer">⌫</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ b.isScan }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;background:#141f2a">
+    <div style="flex:1;position:relative;margin:22px;border:1px dashed rgba(148,188,227,.5);display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(90deg,rgba(242,242,243,.05) 0 1px,transparent 1px 8px)">
+      <div style="width:62%;aspect-ratio:.62;border:1px solid rgba(148,188,227,.8)"></div>
+      <div style="position:absolute;left:0;right:0;bottom:18px;text-align:center;font:400 12px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.65)">Hold steady — reading on-device</div>
+    </div>
+    <div style="padding:0 22px 24px;display:flex;gap:10px">
+      <button onClick="{{ b.capture }}" style="flex:1;min-height:58px;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;font:600 14px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Capture</button>
+      <button onClick="{{ b.capture }}" style="width:118px;min-height:58px;border:1px solid rgba(242,242,243,.3);background:transparent;color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Gallery</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ b.isReview }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:26px 22px;display:flex;flex-direction:column;gap:22px">
+    <div>
+      <div style="font:600 21px/1.15 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase">Best guess</div>
+      <div style="font:400 13px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.62);margin-top:4px">Edit anything, then confirm. Nothing left the phone.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.6)">Subtotal</span>
+        <input class="gi-num" inputmode="decimal" value="{{ b.scanSub }}" onChange="{{ b.onScanSub }}" style="border:1px solid rgba(242,242,243,.3);background:rgba(242,242,243,.05);color:#f2f2f3;padding:11px 12px;font:600 25px/1 'Barlow Semi Condensed',sans-serif;outline:none">
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.6)">Tax</span>
+        <input class="gi-num" inputmode="decimal" value="{{ b.scanTax }}" onChange="{{ b.onScanTax }}" style="border:1px solid rgba(242,242,243,.3);background:rgba(242,242,243,.05);color:#f2f2f3;padding:11px 12px;font:600 25px/1 'Barlow Semi Condensed',sans-serif;outline:none">
+      </label>
+    </div>
+    <div style="border:1px solid rgba(148,188,227,.4);padding:11px 12px;font:400 12px/1.5 'Barlow',sans-serif;color:rgba(242,242,243,.75)">Any "suggested tip" lines on the receipt were skipped on purpose.</div>
+    <div style="display:flex;gap:10px;margin-top:auto">
+      <button onClick="{{ b.goScan }}" style="flex:1;min-height:54px;border:1px solid rgba(242,242,243,.3);background:transparent;color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Retake</button>
+      <button onClick="{{ b.confirm }}" style="flex:1.7;min-height:54px;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Use these numbers</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ b.isSplit }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:26px 22px;display:flex;flex-direction:column;gap:26px">
+    <div style="font:600 21px/1.15 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase">Split</div>
+    <div style="text-align:center">
+      <div style="font:600 9.5px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,242,243,.55)">Each person pays</div>
+      <div class="gi-num" style="font:600 68px/1.05 'Barlow Semi Condensed',sans-serif;letter-spacing:-.02em;margin-top:6px">{{ b.perFmt }}</div>
+      <div class="gi-num" style="font:400 13px/1 'Barlow',sans-serif;color:rgba(242,242,243,.6);margin-top:6px">{{ b.grandFmt }} across {{ b.split }}</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onClick="{{ b.splitDown }}" style="flex:1;min-height:64px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:400 26px/1 'Barlow',sans-serif;cursor:pointer">−</button>
+      <button onClick="{{ b.splitUp }}" style="flex:1;min-height:64px;border:1px solid rgba(242,242,243,.28);background:transparent;color:#f2f2f3;font:400 26px/1 'Barlow',sans-serif;cursor:pointer">+</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;border-top:1px solid rgba(242,242,243,.18)">
+    <button onClick="{{ b.goMain }}" style="flex:1;min-height:58px;border:0;background:{{ b.navMainBg }};color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Bill</button>
+    <button onClick="{{ b.goSplit }}" style="flex:1;min-height:58px;border:0;background:{{ b.navSplitBg }};color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Split</button>
+    <button onClick="{{ b.goScan }}" style="flex:1;min-height:58px;border:0;background:{{ b.navScanBg }};color:#f2f2f3;font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Scan</button>
+    <button style="flex:1;min-height:58px;border:0;background:transparent;color:rgba(242,242,243,.65);font:600 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Support ↗</button>
+  </div>
+</div>
+</x-import>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Paper Tape — the app as the receipt's other half. Scan-first, monospaced tape column, and the $1 stepper promoted to the main gesture. Tap the sun/moon in the header to invert paper and steel.</div>
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" hint-size="412px,892px">
+<div style="min-height:100%;background:{{ c.pageBg }};display:flex;flex-direction:column;font-family:'Barlow',sans-serif">
+  <div style="background:{{ c.chromeBg }};color:{{ c.chromeFg }};padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div style="font:700 19px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase">Gratuit-inator</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;opacity:.7">TABLE OF {{ c.split }}</span>
+      <button onClick="{{ c.toggleDark }}" aria-label="Toggle dark mode" style="width:44px;height:44px;flex:none;border:1px solid {{ c.chromeMark }};background:transparent;color:{{ c.chromeFg }};font:400 15px/1 'Barlow',sans-serif;cursor:pointer">{{ c.modeIcon }}</button>
+    </div>
+  </div>
+
+  <sc-if value="{{ c.isMain }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;padding:18px 16px 14px;display:flex;flex-direction:column;gap:14px">
+    <div style="background:{{ c.cardBg }};box-shadow:{{ c.cardShadow }};padding:20px 18px 18px;display:flex;flex-direction:column;gap:13px;font-family:ui-monospace,Menlo,monospace;color:{{ c.ink }}">
+      <div style="display:flex;justify-content:space-between;font-size:11px;letter-spacing:.08em;color:{{ c.dim }}"><span>GRATUIT-INATOR</span><span>#0042</span></div>
+      <div style="border-top:1px dashed {{ c.rule }}"></div>
+      <label style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+        <span style="font-size:12.5px;letter-spacing:.06em;color:{{ c.dim2 }}">SUBTOTAL</span>
+        <span style="min-width:0;display:flex;align-items:baseline;gap:2px;border-bottom:1px solid {{ c.rule }}">
+          <span style="font-size:14px;color:{{ c.dim }}">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ c.sub }}" onChange="{{ c.onSub }}" placeholder="0.00" style="width:118px;min-width:0;border:0;background:transparent;padding:0 0 3px;text-align:right;font:600 22px/1.1 ui-monospace,Menlo,monospace;color:{{ c.ink }};outline:none">
+        </span>
+      </label>
+      <label style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;opacity:{{ c.taxOpacity }}">
+        <span style="font-size:12.5px;letter-spacing:.06em;color:{{ c.dim2 }}">TAX</span>
+        <span style="min-width:0;display:flex;align-items:baseline;gap:2px;border-bottom:1px solid {{ c.border }}">
+          <span style="font-size:14px;color:{{ c.dim }}">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ c.tax }}" onChange="{{ c.onTax }}" disabled="{{ c.full }}" placeholder="0.00" style="width:118px;min-width:0;border:0;background:transparent;padding:0 0 3px;text-align:right;font:600 22px/1.1 ui-monospace,Menlo,monospace;color:{{ c.ink }};outline:none">
+        </span>
+      </label>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+        <span style="font-size:12.5px;letter-spacing:.06em;color:{{ c.accent }}">TIP {{ c.pctFmt }}</span>
+        <span class="gi-num" style="font:600 22px/1.1 ui-monospace,Menlo,monospace;color:{{ c.accent }}">{{ c.tipFmt }}</span>
+      </div>
+      <div style="border-top:1px dashed {{ c.rule }}"></div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+        <span style="font-size:12.5px;letter-spacing:.06em;padding-bottom:5px">TOTAL</span>
+        <span class="gi-num" style="font:600 36px/1 ui-monospace,Menlo,monospace">{{ c.grandFmt }}</span>
+      </div>
+      <div onClick="{{ c.toggleFull }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-height:44px;border-top:1px dashed {{ c.rule }};padding-top:10px">
+        <span style="width:17px;height:17px;flex:none;border:1px solid {{ c.ink }};display:flex;align-items:center;justify-content:center;background:{{ c.boxBg }};color:{{ c.cardBg }};font-size:12px">{{ c.boxMark }}</span>
+        <span style="font-size:11.5px;letter-spacing:.05em;color:{{ c.dim2 }}">USE FULL BILL AMOUNT</span>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:stretch;gap:10px">
+      <button onClick="{{ c.minus1 }}" style="width:76px;background:{{ c.cardBg }};border:1px solid {{ c.border }};box-shadow:{{ c.cardShadow }};color:{{ c.ink }};font:400 30px/1 'Barlow',sans-serif;cursor:pointer">−</button>
+      <div style="flex:1;background:{{ c.stepBg }};color:{{ c.stepFg }};padding:12px 14px;text-align:center">
+        <div style="font:400 9.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;opacity:.65">TIP · STEP BY $1</div>
+        <div class="gi-num" style="font:600 32px/1.15 'Barlow Semi Condensed',sans-serif">{{ c.tipFmt }}</div>
+        <div style="font:400 10px/1 ui-monospace,Menlo,monospace;opacity:.65">{{ c.adjNote }}</div>
+      </div>
+      <button onClick="{{ c.plus1 }}" style="width:76px;background:{{ c.cardBg }};border:1px solid {{ c.border }};box-shadow:{{ c.cardShadow }};color:{{ c.ink }};font:400 30px/1 'Barlow',sans-serif;cursor:pointer">+</button>
+    </div>
+
+    <div style="display:flex;gap:9px">
+      <button onClick="{{ c.roundDown }}" style="flex:1;min-height:46px;background:{{ c.cardBg }};border:1px solid {{ c.border }};color:{{ c.ink }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;cursor:pointer">ROUND DOWN</button>
+      <button onClick="{{ c.roundUp }}" style="flex:1;min-height:46px;background:{{ c.cardBg }};border:1px solid {{ c.border }};color:{{ c.ink }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;cursor:pointer">ROUND UP</button>
+    </div>
+
+    <div style="background:{{ c.cardBg }};box-shadow:{{ c.cardShadow }};padding:14px;display:flex;flex-direction:column;gap:10px;color:{{ c.ink }}">
+      <div style="display:flex;justify-content:space-between;font:400 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;color:{{ c.dim }}"><span>SET TIP %</span><span>{{ c.pctBadge }}</span></div>
+      <div style="display:flex;gap:7px">
+        <button onClick="{{ c.pct15 }}" style="flex:1;min-height:44px;border:1px solid {{ c.b15 }};background:{{ c.f15 }};color:{{ c.t15 }};font:400 13px/1 ui-monospace,Menlo,monospace;cursor:pointer">15</button>
+        <button onClick="{{ c.pct18 }}" style="flex:1;min-height:44px;border:1px solid {{ c.b18 }};background:{{ c.f18 }};color:{{ c.t18 }};font:400 13px/1 ui-monospace,Menlo,monospace;cursor:pointer">18</button>
+        <button onClick="{{ c.pct20 }}" style="flex:1;min-height:44px;border:1px solid {{ c.b20 }};background:{{ c.f20 }};color:{{ c.t20 }};font:400 13px/1 ui-monospace,Menlo,monospace;cursor:pointer">20</button>
+        <button onClick="{{ c.pct25 }}" style="flex:1;min-height:44px;border:1px solid {{ c.b25 }};background:{{ c.f25 }};color:{{ c.t25 }};font:400 13px/1 ui-monospace,Menlo,monospace;cursor:pointer">25</button>
+      </div>
+      <input type="range" min="0" max="40" step="1" value="{{ c.pct }}" onChange="{{ c.onPct }}" style="width:100%;height:40px;margin:0">
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ c.isScan }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;background:#1d1f20">
+    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(0deg,rgba(242,242,243,.05) 0 3px,transparent 3px 11px)">
+      <div style="width:58%;aspect-ratio:.5;background:rgba(247,247,245,.09);border:1px solid rgba(247,247,245,.35)"></div>
+      <div style="position:absolute;top:20px;left:0;right:0;text-align:center;font:400 11px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:rgba(242,242,243,.7)">ON-DEVICE OCR · OFFLINE</div>
+    </div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:10px;background:{{ c.cardBg }}">
+      <button onClick="{{ c.capture }}" style="min-height:58px;background:{{ c.stepBg }};border:0;color:{{ c.stepFg }};font:400 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.16em;cursor:pointer">CAPTURE RECEIPT</button>
+      <button onClick="{{ c.capture }}" style="min-height:48px;background:transparent;border:1px solid {{ c.border }};color:{{ c.ink }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;cursor:pointer">CHOOSE FROM GALLERY</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ c.isReview }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:16px">
+    <div style="background:{{ c.cardBg }};box-shadow:{{ c.cardShadow }};padding:20px 18px;display:flex;flex-direction:column;gap:14px;font-family:ui-monospace,Menlo,monospace;color:{{ c.ink }}">
+      <div style="font-size:11px;letter-spacing:.12em;color:{{ c.dim }}">WHAT WE READ</div>
+      <div style="border-top:1px dashed {{ c.rule }}"></div>
+      <label style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+        <span style="font-size:12.5px;letter-spacing:.06em">SUBTOTAL</span>
+        <span style="min-width:0;display:flex;align-items:baseline;gap:2px;border-bottom:1px solid {{ c.rule }}">
+          <span style="font-size:13px;color:{{ c.dim }}">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ c.scanSub }}" onChange="{{ c.onScanSub }}" style="width:110px;min-width:0;border:0;background:transparent;padding:0 0 3px;text-align:right;font:600 21px/1.1 ui-monospace,Menlo,monospace;color:{{ c.ink }};outline:none">
+        </span>
+      </label>
+      <label style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+        <span style="font-size:12.5px;letter-spacing:.06em">TAX</span>
+        <span style="min-width:0;display:flex;align-items:baseline;gap:2px;border-bottom:1px solid {{ c.rule }}">
+          <span style="font-size:13px;color:{{ c.dim }}">$</span>
+          <input class="gi-num" inputmode="decimal" value="{{ c.scanTax }}" onChange="{{ c.onScanTax }}" style="width:110px;min-width:0;border:0;background:transparent;padding:0 0 3px;text-align:right;font:600 21px/1.1 ui-monospace,Menlo,monospace;color:{{ c.ink }};outline:none">
+        </span>
+      </label>
+      <div style="border-top:1px dashed {{ c.rule }}"></div>
+      <div style="font-size:10.5px;line-height:1.6;letter-spacing:.04em;color:{{ c.dim2 }}">TIP SUGGESTION LINES IGNORED BY DESIGN. EDIT ANYTHING BEFORE CONFIRMING.</div>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:auto">
+      <button onClick="{{ c.goScan }}" style="flex:1;min-height:52px;background:{{ c.cardBg }};border:1px solid {{ c.border }};color:{{ c.ink }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;cursor:pointer">RETAKE</button>
+      <button onClick="{{ c.confirm }}" style="flex:1.6;min-height:52px;background:{{ c.stepBg }};border:0;color:{{ c.stepFg }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;cursor:pointer">USE THESE</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ c.isSplit }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:16px">
+    <div style="background:{{ c.cardBg }};box-shadow:{{ c.cardShadow }};padding:22px 18px;font-family:ui-monospace,Menlo,monospace;text-align:center;color:{{ c.ink }}">
+      <div style="font-size:10.5px;letter-spacing:.14em;color:{{ c.dim }}">EACH PERSON PAYS</div>
+      <div class="gi-num" style="font:600 44px/1.1 ui-monospace,Menlo,monospace;margin-top:10px">{{ c.perFmt }}</div>
+      <div style="border-top:1px dashed {{ c.rule }};margin:16px 0 12px"></div>
+      <div class="gi-num" style="font-size:11.5px;letter-spacing:.06em;color:{{ c.dim2 }}">{{ c.grandFmt }} ÷ {{ c.split }}</div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <button onClick="{{ c.splitDown }}" style="flex:1;min-height:60px;background:{{ c.cardBg }};border:1px solid {{ c.border }};color:{{ c.ink }};font:400 26px/1 'Barlow',sans-serif;cursor:pointer">−</button>
+      <button onClick="{{ c.splitUp }}" style="flex:1;min-height:60px;background:{{ c.cardBg }};border:1px solid {{ c.border }};color:{{ c.ink }};font:400 26px/1 'Barlow',sans-serif;cursor:pointer">+</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;background:{{ c.cardBg }};border-top:1px solid {{ c.border }}">
+    <button onClick="{{ c.goMain }}" style="flex:1;min-height:56px;border:0;background:{{ c.navMainBg }};color:{{ c.navMainFg }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;cursor:pointer">BILL</button>
+    <button onClick="{{ c.goSplit }}" style="flex:1;min-height:56px;border:0;background:{{ c.navSplitBg }};color:{{ c.navSplitFg }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;cursor:pointer">SPLIT</button>
+    <button onClick="{{ c.goScan }}" style="flex:1;min-height:56px;border:0;background:{{ c.navScanBg }};color:{{ c.navScanFg }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;cursor:pointer">SCAN</button>
+    <button style="flex:1;min-height:56px;border:0;background:transparent;color:{{ c.dim }};font:400 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;cursor:pointer">TIP US ↗</button>
+  </div>
+</div>
+</x-import>
+</div>
+
+</div>
+<p class="dv-next">Try next: "take <a class="dv-oid" href="#1b">1b</a>'s keypad into <a class="dv-oid" href="#1a">1a</a>" · "make <a class="dv-oid" href="#1c">1c</a> dark for the restaurant" · "new directions for the scan flow"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1500,&quot;height&quot;:1100}}">
+class Component extends DCLogic {
+  state = {
+    a: { sub: '84.20', tax: '7.16', pct: 18, mode: 'pct', abs: 0, split: 2, full: false, screen: 'main', scanSub: '84.20', scanTax: '', active: 'sub' },
+    b: { sub: '84.20', tax: '7.16', pct: 20, mode: 'pct', abs: 0, split: 3, full: false, screen: 'main', scanSub: '84.20', scanTax: '7.16', active: 'sub' },
+    c: { sub: '84.20', tax: '7.16', pct: 18, mode: 'pct', abs: 0, split: 2, full: false, screen: 'main', scanSub: '84.20', scanTax: '7.16', active: 'sub', dark: false }
+  };
+
+  money(n) { return '$' + (Math.round(n * 100) / 100).toFixed(2); }
+
+  calc(o) {
+    const sub = parseFloat(o.sub) || 0;
+    const tax = o.full ? 0 : (parseFloat(o.tax) || 0);
+    const tip = Math.max(0, o.mode === 'pct' ? sub * o.pct / 100 : o.abs);
+    return { sub, tax, tip, grand: sub + tax + tip, shown: sub > 0 ? tip / sub * 100 : 0 };
+  }
+
+  pack(k) {
+    const o = this.state[k];
+    const m = this.calc(o);
+    const set = p => this.setState(s => ({ [k]: Object.assign({}, s[k], p) }));
+    const pct = v => () => set({ pct: v, mode: 'pct' });
+    const roundTo = dir => () => {
+      const base = m.sub + m.tax;
+      const g = m.grand;
+      const target = dir > 0 ? Math.floor(g + 1e-9) + 1 : Math.ceil(g - 1e-9) - 1;
+      set({ mode: 'abs', abs: Math.max(0, target - base) });
+    };
+    const step = d => () => set({ mode: 'abs', abs: Math.max(0, Math.round((m.tip + d) * 100) / 100) });
+    const type = ch => () => {
+      const f = o.active === 'tax' && !o.full ? 'tax' : 'sub';
+      let v = o[f] || '';
+      if (ch === 'del') v = v.slice(0, -1);
+      else if (ch === '.') { if (!v.includes('.')) v = (v || '0') + '.'; }
+      else if (v.includes('.') && v.split('.')[1].length >= 2) v = v;
+      else v = (v === '0' ? '' : v) + ch;
+      set({ [f]: v, mode: 'pct' });
+    };
+    const on = f => e => set({ [f]: e.target.value, mode: 'pct' });
+    const active = o.mode === 'pct' ? o.pct : null;
+    const chip = v => ({
+      border: active === v ? '#5980a6' : (k === 'b' ? 'rgba(242,242,243,.28)' : 'rgba(29,31,32,.25)'),
+      fill: active === v ? '#5980a6' : 'transparent',
+      text: active === v ? '#f2f2f3' : (k === 'b' ? '#f2f2f3' : '#1d1f20')
+    });
+    const c15 = chip(15), c18 = chip(18), c20 = chip(20), c25 = chip(25);
+    const selBg = k === 'b' ? 'rgba(89,128,166,.28)' : '#1d2d3d';
+    const selFg = '#f2f2f3';
+    const idle = k === 'b' ? 'transparent' : 'transparent';
+    const parts = [this.money(m.sub) + ' sub', (o.full ? 'tax incl.' : this.money(m.tax) + ' tax'), this.money(m.tip) + ' tip'];
+    const out = {
+      sub: o.sub, tax: o.tax, pct: o.pct, split: o.split, full: o.full,
+      scanSub: o.scanSub, scanTax: o.scanTax,
+      subFmt: this.money(m.sub), taxFmt: o.full ? 'incl.' : this.money(m.tax),
+      tipFmt: this.money(m.tip), grandFmt: this.money(m.grand),
+      perFmt: this.money(m.grand / o.split),
+      breakdown: parts.join('  ·  '),
+      pctFmt: (o.mode === 'pct' ? o.pct.toFixed(0) : m.shown.toFixed(1)) + '%',
+      pctLabel: o.mode === 'pct' ? 'tip' : 'implied',
+      pctBadge: (o.mode === 'pct' ? o.pct.toFixed(0) : m.shown.toFixed(1)) + '%',
+      adjNote: o.mode === 'abs' ? 'adjusted by hand' : 'from ' + o.pct + '% of subtotal',
+      splitLabel: '÷ ' + o.split,
+      taxOpacity: o.full ? 0.4 : 1,
+      boxBg: o.full ? '#1d1f20' : 'transparent',
+      boxMark: o.full ? '✕' : '',
+      fullHint: o.full ? 'Tax is folded into the subtotal — tip is calculated on the whole bill.' : 'Tip is calculated on the subtotal only, never on tax.',
+      activeLabel: o.active === 'tax' && !o.full ? 'tax' : 'subtotal',
+      subBorder: o.active === 'sub' ? '#94bce3' : 'rgba(242,242,243,.22)',
+      subFill: o.active === 'sub' ? 'rgba(148,188,227,.14)' : 'transparent',
+      taxBorder: o.active === 'tax' && !o.full ? '#94bce3' : 'rgba(242,242,243,.22)',
+      taxFill: o.active === 'tax' && !o.full ? 'rgba(148,188,227,.14)' : 'transparent',
+      b15: c15.border, f15: c15.fill, t15: c15.text,
+      b18: c18.border, f18: c18.fill, t18: c18.text,
+      b20: c20.border, f20: c20.fill, t20: c20.text,
+      b25: c25.border, f25: c25.fill, t25: c25.text,
+      isMain: o.screen === 'main', isScan: o.screen === 'scan', isReview: o.screen === 'review', isSplit: o.screen === 'split',
+      navMain: o.screen === 'main' ? '#5980a6' : 'transparent',
+      navSplit: o.screen === 'split' ? '#5980a6' : 'transparent',
+      navScan: o.screen === 'scan' || o.screen === 'review' ? '#5980a6' : 'transparent',
+      navMainBg: o.screen === 'main' ? selBg : idle,
+      navSplitBg: o.screen === 'split' ? selBg : idle,
+      navScanBg: (o.screen === 'scan' || o.screen === 'review') ? selBg : idle,
+      navMainFg: o.screen === 'main' ? selFg : 'rgba(29,31,32,.7)',
+      navSplitFg: o.screen === 'split' ? selFg : 'rgba(29,31,32,.7)',
+      navScanFg: (o.screen === 'scan' || o.screen === 'review') ? selFg : 'rgba(29,31,32,.7)',
+      goMain: () => set({ screen: 'main' }), goSplit: () => set({ screen: 'split' }), goScan: () => set({ screen: 'scan' }),
+      capture: () => set({ screen: 'review' }),
+      confirm: () => set({ screen: 'main', sub: o.scanSub, tax: o.scanTax, mode: 'pct' }),
+      onSub: on('sub'), onTax: on('tax'), onScanSub: on('scanSub'), onScanTax: on('scanTax'),
+      onPct: e => set({ pct: Number(e.target.value), mode: 'pct' }),
+      pct15: pct(15), pct18: pct(18), pct20: pct(20), pct25: pct(25),
+      roundDown: roundTo(-1), roundUp: roundTo(1), minus1: step(-1), plus1: step(1),
+      splitUp: () => set({ split: o.split + 1 }), splitDown: () => set({ split: Math.max(1, o.split - 1) }),
+      toggleFull: () => set({ full: !o.full, active: 'sub', mode: 'pct' }),
+      tabSub: () => set({ active: 'sub' }), tabTax: () => set({ active: 'tax' }),
+      k0: type('0'), k1: type('1'), k2: type('2'), k3: type('3'), k4: type('4'),
+      k5: type('5'), k6: type('6'), k7: type('7'), k8: type('8'), k9: type('9'),
+      kdot: type('.'), kdel: type('del'),
+      toggleDark: () => set({ dark: !o.dark })
+    };
+    if (k === 'c') Object.assign(out, this.paperTheme(o, m));
+    return out;
+  }
+
+  paperTheme(o, m) {
+    const d = o.dark;
+    const ink = d ? '#f2f2f3' : '#1d1f20';
+    const cardBg = d ? '#1d2d3d' : '#f7f7f5';
+    const chromeBg = d ? '#f2f2f3' : '#1d2d3d';
+    const chromeFg = d ? '#1d2d3d' : '#f2f2f3';
+    const dim = d ? 'rgba(242,242,243,.6)' : 'rgba(29,31,32,.55)';
+    const dim2 = d ? 'rgba(242,242,243,.8)' : 'rgba(29,31,32,.78)';
+    const rule = d ? 'rgba(242,242,243,.34)' : 'rgba(29,31,32,.3)';
+    const border = d ? 'rgba(242,242,243,.24)' : 'rgba(29,31,32,.2)';
+    const active = o.mode === 'pct' ? o.pct : null;
+    const chip = v => ({
+      b: active === v ? '#5980a6' : border,
+      f: active === v ? '#5980a6' : 'transparent',
+      t: active === v ? '#f2f2f3' : ink
+    });
+    const c15 = chip(15), c18 = chip(18), c20 = chip(20), c25 = chip(25);
+    const sel = s => o.screen === s;
+    const scanSel = sel('scan') || sel('review');
+    return {
+      pageBg: d ? '#141f2a' : '#e9e9ea',
+      cardBg, chromeBg, chromeFg, ink, dim, dim2, rule, border,
+      chromeMark: d ? 'rgba(29,45,61,.35)' : 'rgba(242,242,243,.35)',
+      cardShadow: d ? '0 1px 2px rgba(0,0,0,.45)' : '0 1px 2px rgba(43,43,45,.14)',
+      stepBg: chromeBg, stepFg: chromeFg,
+      accent: d ? '#94bce3' : '#416180',
+      boxBg: o.full ? ink : 'transparent',
+      modeIcon: d ? '☀' : '☾',
+      b15: c15.b, f15: c15.f, t15: c15.t,
+      b18: c18.b, f18: c18.f, t18: c18.t,
+      b20: c20.b, f20: c20.f, t20: c20.t,
+      b25: c25.b, f25: c25.f, t25: c25.t,
+      navMainBg: sel('main') ? chromeBg : 'transparent',
+      navSplitBg: sel('split') ? chromeBg : 'transparent',
+      navScanBg: scanSel ? chromeBg : 'transparent',
+      navMainFg: sel('main') ? chromeFg : dim2,
+      navSplitFg: sel('split') ? chromeFg : dim2,
+      navScanFg: scanSel ? chromeFg : dim2
+    };
+  }
+
+  renderVals() { return { a: this.pack('a'), b: this.pack('b'), c: this.pack('c') }; }
+}
+</script>
+</body>
+</html>
