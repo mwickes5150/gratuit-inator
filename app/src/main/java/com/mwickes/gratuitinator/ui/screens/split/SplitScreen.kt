@@ -18,7 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,6 +58,7 @@ fun SplitScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .shadow(elevation = 1.dp, shape = RectangleShape, ambientColor = tape.cardShadow, spotColor = tape.cardShadow)
                 .background(tape.cardBg)
                 .padding(vertical = 22.dp, horizontal = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,7 +100,11 @@ fun SplitScreen(
         ) {
             OutlinedButton(
                 onClick = viewModel::decrementPeople,
-                modifier = Modifier.weight(1f).fillMaxHeight().testTag("splitDownButton"),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .testTag("splitDownButton")
+                    .semantics { contentDescription = "Decrease number of people" },
                 border = BorderStroke(1.dp, tape.rule),
                 contentPadding = PaddingValues(4.dp),
             ) {
@@ -103,7 +112,11 @@ fun SplitScreen(
             }
             OutlinedButton(
                 onClick = viewModel::incrementPeople,
-                modifier = Modifier.weight(1f).fillMaxHeight().testTag("splitUpButton"),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .testTag("splitUpButton")
+                    .semantics { contentDescription = "Increase number of people" },
                 border = BorderStroke(1.dp, tape.rule),
                 contentPadding = PaddingValues(4.dp),
             ) {

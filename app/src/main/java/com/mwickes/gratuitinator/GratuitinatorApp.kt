@@ -22,10 +22,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mwickes.gratuitinator.data.ThemePreferences
 import com.mwickes.gratuitinator.navigation.Destination
 import com.mwickes.gratuitinator.navigation.GratuitinatorNavGraph
 import com.mwickes.gratuitinator.ui.components.MoonOutlineIcon
@@ -45,6 +50,8 @@ import com.mwickes.gratuitinator.ui.theme.GratuitinatorTheme
 import com.mwickes.gratuitinator.ui.theme.LocalTapeColors
 import com.mwickes.gratuitinator.ui.theme.TapeColors
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * Top-level app composable: a header (title + paper/steel toggle) over a NavHost, with a flat
@@ -61,6 +68,16 @@ fun GratuitinatorApp() {
     val mainViewModel: MainViewModel = viewModel()
     var showSplash by remember { mutableStateOf(true) }
 
+    val context = LocalContext.current
+    val themePreferences = remember { ThemePreferences(context.applicationContext) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        // A persisted choice overrides the system-dark seed above; no persisted value yet (first
+        // launch) leaves the system-dark default in place.
+        themePreferences.darkSteelFlow.first()?.let { persisted -> darkSteel = persisted }
+    }
+
     LaunchedEffect(Unit) {
         delay(1200)
         showSplash = false
@@ -71,7 +88,15 @@ fun GratuitinatorApp() {
             if (splash) {
                 SplashScreen()
             } else {
-                GratuitinatorContent(mainViewModel = mainViewModel, darkSteel = darkSteel, onToggleDarkSteel = { darkSteel = !darkSteel })
+                GratuitinatorContent(
+                    mainViewModel = mainViewModel,
+                    darkSteel = darkSteel,
+                    onToggleDarkSteel = {
+                        val newValue = !darkSteel
+                        darkSteel = newValue
+                        coroutineScope.launch { themePreferences.setDarkSteel(newValue) }
+                    },
+                )
             }
         }
     }
@@ -117,7 +142,11 @@ private fun GratuitinatorContent(
                     )
                     IconButton(
                         onClick = onToggleDarkSteel,
-                        modifier = Modifier.size(44.dp),
+                        modifier = Modifier
+                            .size(44.dp)
+                            .semantics {
+                                contentDescription = if (darkSteel) "Switch to paper theme" else "Switch to steel theme"
+                            },
                     ) {
                         if (darkSteel) {
                             SunOutlineIcon(color = tape.stepFg)

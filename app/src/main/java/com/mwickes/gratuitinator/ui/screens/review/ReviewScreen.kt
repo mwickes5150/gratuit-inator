@@ -18,6 +18,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -71,6 +74,7 @@ fun ReviewScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .shadow(elevation = 1.dp, shape = RectangleShape, ambientColor = tape.cardShadow, spotColor = tape.cardShadow)
                 .background(tape.cardBg)
                 .padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(13.dp),
@@ -81,6 +85,8 @@ fun ReviewScreen(
                 onValueChange = viewModel::onSubtotalChanged,
                 readable = uiState.subtotalReadable,
                 tape = tape,
+                fieldTestTag = "subtotalField",
+                hintTestTag = "subtotalUnreadableHint",
             )
             DashedDivider(color = tape.rule)
             ReviewFieldRow(
@@ -89,6 +95,8 @@ fun ReviewScreen(
                 onValueChange = viewModel::onTaxChanged,
                 readable = uiState.taxReadable,
                 tape = tape,
+                fieldTestTag = "taxField",
+                hintTestTag = "taxUnreadableHint",
             )
         }
 
@@ -113,13 +121,13 @@ fun ReviewScreen(
         ) {
             OutlinedButton(
                 onClick = onRetake,
-                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp),
+                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp).testTag("retakeButton"),
             ) {
                 Text(text = "RETAKE", fontFamily = FontFamily.Monospace, fontSize = 11.sp, letterSpacing = 0.5.sp, color = tape.ink)
             }
             Button(
                 onClick = { onUseThese(uiState.subtotalInput, uiState.taxInput) },
-                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp),
+                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp).testTag("useTheseButton"),
             ) {
                 Text(text = "USE THESE", fontFamily = FontFamily.Monospace, fontSize = 11.sp, letterSpacing = 0.5.sp)
             }
@@ -134,6 +142,8 @@ private fun ReviewFieldRow(
     onValueChange: (String) -> Unit,
     readable: Boolean,
     tape: com.mwickes.gratuitinator.ui.theme.TapeColors,
+    fieldTestTag: String,
+    hintTestTag: String,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(
@@ -147,6 +157,7 @@ private fun ReviewFieldRow(
                 onValueChange = onValueChange,
                 ink = if (readable) tape.ink else tape.dim,
                 dim = tape.dim,
+                testTag = fieldTestTag,
             )
         }
         if (!readable) {
@@ -157,6 +168,7 @@ private fun ReviewFieldRow(
                 letterSpacing = 0.3.sp,
                 fontStyle = FontStyle.Italic,
                 color = tape.dim,
+                modifier = Modifier.testTag(hintTestTag),
             )
         }
     }
