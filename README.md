@@ -1,5 +1,7 @@
 Gratuit-inator
 
+[![Android CI](https://github.com/mwickes5150/gratuit-inator/actions/workflows/android-ci.yml/badge.svg)](https://github.com/mwickes5150/gratuit-inator/actions/workflows/android-ci.yml)
+
 An ad-free Android tip calculator with tax-aware calculation, one-tap rounding to an even dollar amount, and receipt photo scanning.
 
 Features
