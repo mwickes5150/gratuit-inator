@@ -1,5 +1,6 @@
 package com.mwickes.gratuitinator
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,10 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,10 +36,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mwickes.gratuitinator.navigation.Destination
 import com.mwickes.gratuitinator.navigation.GratuitinatorNavGraph
+import com.mwickes.gratuitinator.ui.components.MoonOutlineIcon
+import com.mwickes.gratuitinator.ui.components.SunOutlineIcon
 import com.mwickes.gratuitinator.ui.screens.main.MainViewModel
+import com.mwickes.gratuitinator.ui.screens.splash.SplashScreen
 import com.mwickes.gratuitinator.ui.theme.GratuitinatorTheme
 import com.mwickes.gratuitinator.ui.theme.LocalTapeColors
 import com.mwickes.gratuitinator.ui.theme.TapeColors
+import kotlinx.coroutines.delay
 
 /**
  * Top-level app composable: a header (title + paper/steel toggle) over a NavHost, with a minimal
@@ -50,73 +57,112 @@ fun GratuitinatorApp() {
     val systemDark = isSystemInDarkTheme()
     var darkSteel by remember { mutableStateOf(systemDark) }
     val mainViewModel: MainViewModel = viewModel()
+    var showSplash by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        delay(1200)
+        showSplash = false
+    }
 
     GratuitinatorTheme(darkSteel = darkSteel) {
-        val tape = LocalTapeColors.current
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(tape.stepBg)
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+        Crossfade(targetState = showSplash, label = "splash") { splash ->
+            if (splash) {
+                SplashScreen()
+            } else {
+                GratuitinatorContent(mainViewModel = mainViewModel, darkSteel = darkSteel, onToggleDarkSteel = { darkSteel = !darkSteel })
+            }
+        }
+    }
+}
+
+@Composable
+private fun GratuitinatorContent(
+    mainViewModel: MainViewModel,
+    darkSteel: Boolean,
+    onToggleDarkSteel: () -> Unit,
+) {
+    val tape = LocalTapeColors.current
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(tape.stepBg)
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "GRATUIT-INATOR",
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 19.sp,
+                    letterSpacing = 1.5.sp,
+                    color = tape.stepFg,
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "GRATUIT-INATOR",
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp,
-                        letterSpacing = 1.5.sp,
+                        text = "CLEAR",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 11.sp,
+                        letterSpacing = 0.5.sp,
                         color = tape.stepFg,
+                        modifier = Modifier
+                            .defaultMinSize(minWidth = 44.dp, minHeight = 44.dp)
+                            .clickable { mainViewModel.onClear() }
+                            .padding(horizontal = 8.dp)
+                            .wrapContentSize(Alignment.Center),
                     )
                     IconButton(
-                        onClick = { darkSteel = !darkSteel },
+                        onClick = onToggleDarkSteel,
                         modifier = Modifier.size(44.dp),
                     ) {
-                        Text(text = if (darkSteel) "☀" else "☾", color = tape.stepFg)
+                        if (darkSteel) {
+                            SunOutlineIcon(color = tape.stepFg)
+                        } else {
+                            MoonOutlineIcon(color = tape.stepFg)
+                        }
                     }
                 }
+            }
 
-                val navController = rememberNavController()
-                GratuitinatorNavGraph(
-                    navController = navController,
-                    mainViewModel = mainViewModel,
-                    modifier = Modifier.weight(1f).fillMaxSize(),
+            val navController = rememberNavController()
+            GratuitinatorNavGraph(
+                navController = navController,
+                mainViewModel = mainViewModel,
+                modifier = Modifier.weight(1f).fillMaxSize(),
+            )
+
+            val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(tape.cardBg),
+            ) {
+                BottomTab(
+                    label = "BILL",
+                    selected = currentRoute == Destination.Main.route,
+                    tape = tape,
+                    onClick = {
+                        navController.navigate(Destination.Main.route) {
+                            popUpTo(Destination.Main.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
                 )
-
-                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(tape.cardBg),
-                ) {
-                    BottomTab(
-                        label = "BILL",
-                        selected = currentRoute == Destination.Main.route,
-                        tape = tape,
-                        onClick = {
-                            navController.navigate(Destination.Main.route) {
-                                popUpTo(Destination.Main.route) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                    )
-                    BottomTab(
-                        label = "SCAN",
-                        selected = currentRoute == Destination.Scan.route,
-                        tape = tape,
-                        onClick = {
-                            navController.navigate(Destination.Scan.route) {
-                                popUpTo(Destination.Main.route) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                    )
-                }
+                BottomTab(
+                    label = "SCAN",
+                    selected = currentRoute == Destination.Scan.route,
+                    tape = tape,
+                    onClick = {
+                        navController.navigate(Destination.Scan.route) {
+                            popUpTo(Destination.Main.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                )
             }
         }
     }

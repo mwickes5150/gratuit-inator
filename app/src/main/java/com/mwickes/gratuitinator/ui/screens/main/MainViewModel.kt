@@ -43,6 +43,11 @@ class MainViewModel : ViewModel() {
         _state.value = TipCalculator.onToggleFullBillAmount(_state.value)
     }
 
+    /** Resets Subtotal/Tax/Tip/full-bill-toggle back to their defaults for a fresh bill. */
+    fun onClear() {
+        _state.value = BillState()
+    }
+
     fun onPctPreset(pct: Double) {
         _state.value = _state.value.copy(tipMode = TipCalculator.onPercentChanged(pct))
     }
