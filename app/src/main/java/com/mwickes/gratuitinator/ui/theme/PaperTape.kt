@@ -18,6 +18,7 @@ data class TapeColors(
     val accent2: Color,
     val stepBg: Color,
     val stepFg: Color,
+    val cardShadow: Color,
 )
 
 val PaperTapeColors = TapeColors(
@@ -30,6 +31,7 @@ val PaperTapeColors = TapeColors(
     accent2 = TapeAccent2,
     stepBg = TapeAccent,
     stepFg = PaperBg,
+    cardShadow = PaperCardShadow,
 )
 
 val SteelTapeColors = TapeColors(
@@ -42,6 +44,7 @@ val SteelTapeColors = TapeColors(
     accent2 = TapeAccent2,
     stepBg = TapeAccent,
     stepFg = SteelBg,
+    cardShadow = SteelCardShadow,
 )
 
 val LocalTapeColors = staticCompositionLocalOf { PaperTapeColors }

@@ -1,7 +1,6 @@
 package com.mwickes.gratuitinator.ui.screens.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Slider
@@ -18,8 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -66,6 +69,7 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .shadow(elevation = 1.dp, shape = RectangleShape, ambientColor = tape.cardShadow, spotColor = tape.cardShadow)
                 .background(tape.cardBg)
                 .padding(start = 18.dp, end = 18.dp, top = 20.dp, bottom = 18.dp),
             verticalArrangement = Arrangement.spacedBy(13.dp),
@@ -130,7 +134,11 @@ fun MainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .defaultMinSize(minHeight = 44.dp)
-                    .clickable { viewModel.onToggleFullBillAmount() }
+                    .toggleable(
+                        value = state.useFullBillAmount,
+                        role = Role.Checkbox,
+                        onValueChange = { viewModel.onToggleFullBillAmount() },
+                    )
                     .padding(top = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -168,6 +176,7 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .shadow(elevation = 1.dp, shape = RectangleShape, ambientColor = tape.cardShadow, spotColor = tape.cardShadow)
                 .background(tape.cardBg)
                 .padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
