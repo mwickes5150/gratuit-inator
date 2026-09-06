@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -151,37 +149,20 @@ fun MainScreen(
             }
         }
 
-        // Promoted +/-$1 tip stepper.
+        // Promoted tip-adjustment block: Round Down/Up flank the amount, +/-$1 underneath.
         StepperBlock(
             tipAmount = totals.tip,
             tipMode = state.tipMode,
+            onRoundDown = viewModel::onRoundDown,
+            onRoundUp = viewModel::onRoundUp,
             onMinus1 = viewModel::onStepMinus1,
             onPlus1 = viewModel::onStepPlus1,
             ink = tape.ink,
             border = tape.rule,
             stepBg = tape.stepBg,
             stepFg = tape.stepFg,
-            modifier = Modifier.fillMaxWidth().height(90.dp),
-        )
-
-        // Round Down / Round Up.
-        Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(9.dp),
-        ) {
-            OutlinedButton(
-                onClick = viewModel::onRoundDown,
-                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp),
-            ) {
-                Text(text = "ROUND DOWN", fontFamily = FontFamily.Monospace, fontSize = 11.sp, letterSpacing = 0.5.sp, color = tape.ink)
-            }
-            OutlinedButton(
-                onClick = viewModel::onRoundUp,
-                modifier = Modifier.weight(1f).defaultMinSize(minHeight = 46.dp),
-            ) {
-                Text(text = "ROUND UP", fontFamily = FontFamily.Monospace, fontSize = 11.sp, letterSpacing = 0.5.sp, color = tape.ink)
-            }
-        }
+        )
 
         // Set Tip % card: preset chips + slider.
         Column(
