@@ -32,29 +32,35 @@ object TipCalculator {
 
     private fun BigDecimal.orZeroFloor(): BigDecimal = if (this.signum() < 0) ZERO else this
 
-    /** Tip amount (2dp, never negative) implied by [state]'s current [TipMode] and subtotal. */
-    private fun tipAmount(subtotal: BigDecimal, tipMode: TipMode): BigDecimal = when (tipMode) {
+    /** Tip amount (2dp, never negative) implied by [state]'s current [TipMode] and its basis. */
+    private fun tipAmount(basis: BigDecimal, tipMode: TipMode): BigDecimal = when (tipMode) {
         is TipMode.Pct -> {
             val pct = BigDecimal.valueOf(tipMode.pct)
-            subtotal.multiply(pct).divide(BigDecimal(100), 2, RoundingMode.HALF_UP).orZeroFloor()
+            basis.multiply(pct).divide(BigDecimal(100), 2, RoundingMode.HALF_UP).orZeroFloor()
         }
         is TipMode.Abs -> money(tipMode.amount)
     }
 
+    /** The amount the tip % is computed against: Subtotal alone, or Subtotal+Tax when "use full bill amount" is on. */
+    private fun tipBasis(subtotal: BigDecimal, tax: BigDecimal, useFullBillAmount: Boolean): BigDecimal =
+        if (useFullBillAmount) subtotal.add(tax) else subtotal
+
     /**
      * Resolves a [BillState] into display-ready [BillTotals]. Tip is computed on Subtotal only,
-     * never on Tax. "Use full bill amount" forces Tax to $0 (Subtotal then represents the whole
-     * bill, and tip is calculated on it).
+     * never on Tax — unless "use full bill amount" is on, in which case Tip = (Subtotal + Tax) x
+     * %. Either way, Tax itself is never zeroed out: it's a calculation-basis switch, not a
+     * data-clearing one, and Grand Total always includes the actual Tax entered.
      */
     fun calculate(state: BillState): BillTotals {
         val subtotal = parseAmount(state.subtotalInput)
-        val tax = if (state.useFullBillAmount) ZERO else parseAmount(state.taxInput)
-        val tip = tipAmount(subtotal, state.tipMode)
+        val tax = parseAmount(state.taxInput)
+        val basis = tipBasis(subtotal, tax, state.useFullBillAmount)
+        val tip = tipAmount(basis, state.tipMode)
         val grandTotal = subtotal.add(tax).add(tip)
         val people = if (state.peopleCount < 1) 1 else state.peopleCount
         val perPerson = grandTotal.divide(BigDecimal(people), 2, RoundingMode.HALF_UP)
-        val impliedTipPct = if (subtotal.signum() > 0) {
-            tip.multiply(BigDecimal(100)).divide(subtotal, 4, RoundingMode.HALF_UP).toDouble()
+        val impliedTipPct = if (basis.signum() > 0) {
+            tip.multiply(BigDecimal(100)).divide(basis, 4, RoundingMode.HALF_UP).toDouble()
         } else {
             0.0
         }
@@ -76,9 +82,10 @@ object TipCalculator {
      */
     fun roundTip(state: BillState, roundUp: Boolean): TipMode.Abs {
         val subtotal = parseAmount(state.subtotalInput)
-        val tax = if (state.useFullBillAmount) ZERO else parseAmount(state.taxInput)
+        val tax = parseAmount(state.taxInput)
         val base = subtotal.add(tax)
-        val tip = tipAmount(subtotal, state.tipMode)
+        val basis = tipBasis(subtotal, tax, state.useFullBillAmount)
+        val tip = tipAmount(basis, state.tipMode)
         val grand = base.add(tip)
 
         val target = if (roundUp) {
@@ -112,10 +119,11 @@ object TipCalculator {
     }
 
     /**
-     * Toggling "use full bill amount": clears the (now hidden/shown) Tax field to avoid a stale
-     * value silently reappearing later, and resets the tip mode to Pct (preserving the current
-     * percentage if already in Pct mode, otherwise defaulting to 20%) — mirrors the JS
-     * reference's `toggleFull`.
+     * Toggling "use full bill amount": only flips which amount the tip % is computed against
+     * (Subtotal alone vs. Subtotal+Tax) — a calculation-basis switch, not a data-clearing one.
+     * The Tax value is left untouched (still shown, disabled, and restored if toggled back off),
+     * and the tip mode resets to Pct (preserving the current percentage if already in Pct mode,
+     * otherwise defaulting to 20%) so Tip/Grand Total recalculate live against the new basis.
      */
     fun onToggleFullBillAmount(state: BillState): BillState {
         val resetPct = when (val mode = state.tipMode) {
@@ -124,7 +132,6 @@ object TipCalculator {
         }
         return state.copy(
             useFullBillAmount = !state.useFullBillAmount,
-            taxInput = "",
             tipMode = TipMode.Pct(resetPct),
         )
     }

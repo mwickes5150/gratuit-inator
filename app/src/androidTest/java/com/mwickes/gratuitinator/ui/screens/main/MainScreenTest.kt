@@ -37,11 +37,21 @@ class MainScreenTest {
     fun typingSubtotalUpdatesTipAndTotal() {
         setContent()
 
-        composeTestRule.onNodeWithTag("subtotalField").performClick().performTextInput("100")
+        // Cash-register-style entry: digits fill in from the right, so "10000" -> $100.00.
+        composeTestRule.onNodeWithTag("subtotalField").performClick().performTextInput("10000")
 
         // 20% default tip on a 100 subtotal -> Tip $20.00, Total $120.00.
         composeTestRule.onNodeWithTag("tipAmountText").assertTextEquals("$20.00")
         composeTestRule.onNodeWithTag("totalAmountText").assertTextEquals("$120.00")
+    }
+
+    @Test
+    fun typingDigitsAutoInsertsDecimalPointFromTheRight() {
+        setContent()
+
+        composeTestRule.onNodeWithTag("subtotalField").performClick().performTextInput("1542")
+
+        composeTestRule.onNodeWithTag("subtotalField").assertTextEquals("15.42")
     }
 
     @Test
@@ -53,6 +63,31 @@ class MainScreenTest {
         composeTestRule.onNodeWithText("USE FULL BILL AMOUNT").performClick()
 
         composeTestRule.onNodeWithTag("taxField").assertIsNotEnabled()
+    }
+
+    @Test
+    fun fullBillToggleKeepsTaxAndRecalculatesTipLive() {
+        val viewModel = setContent()
+
+        composeTestRule.runOnIdle {
+            viewModel.onSubtotalChanged("100")
+            viewModel.onTaxChanged("8")
+        }
+        // Off: Tip = 100 * 20% = $20.00, Total = 100 + 8 + 20 = $128.00.
+        composeTestRule.onNodeWithTag("tipAmountText").assertTextEquals("$20.00")
+
+        composeTestRule.onNodeWithText("USE FULL BILL AMOUNT").performClick()
+
+        // On: Tip = (100 + 8) * 20% = $21.60 — tax preserved and folded into the tip basis,
+        // not cleared, and the tip recomputes live rather than staying frozen.
+        composeTestRule.onNodeWithTag("tipAmountText").assertTextEquals("$21.60")
+        composeTestRule.onNodeWithTag("totalAmountText").assertTextEquals("$129.60")
+
+        composeTestRule.onNodeWithText("USE FULL BILL AMOUNT").performClick()
+
+        // Off again: tax value is restored, tip basis back to subtotal only.
+        composeTestRule.onNodeWithTag("tipAmountText").assertTextEquals("$20.00")
+        composeTestRule.onNodeWithTag("totalAmountText").assertTextEquals("$128.00")
     }
 
     @Test

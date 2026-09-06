@@ -41,13 +41,13 @@ class TipCalculatorTest {
     }
 
     @Test
-    fun `useFullBillAmount forces tax to zero`() {
+    fun `useFullBillAmount computes tip on subtotal plus tax, without zeroing tax`() {
         val totals = TipCalculator.calculate(
             state(subtotal = "100", tax = "8", fullBill = true, tipMode = TipMode.Pct(20.0)),
         )
-        assertEquals(0.0, totals.tax, 0.001)
-        assertEquals(20.0, totals.tip, 0.001)
-        assertEquals(120.0, totals.grandTotal, 0.001)
+        assertEquals(8.0, totals.tax, 0.001)
+        assertEquals(21.6, totals.tip, 0.001)
+        assertEquals(129.6, totals.grandTotal, 0.001)
     }
 
     @Test
@@ -185,7 +185,7 @@ class TipCalculatorTest {
     // --- Full bill toggle ---
 
     @Test
-    fun `toggling full bill amount on clears tax and resets to pct mode`() {
+    fun `toggling full bill amount on preserves tax and resets to pct mode`() {
         val s = state(
             subtotal = "100",
             tax = "8",
@@ -194,16 +194,27 @@ class TipCalculatorTest {
         )
         val toggled = TipCalculator.onToggleFullBillAmount(s)
         assertTrue(toggled.useFullBillAmount)
-        assertEquals("", toggled.taxInput)
+        assertEquals("8", toggled.taxInput)
         assertTrue(toggled.tipMode is TipMode.Pct)
     }
 
     @Test
-    fun `toggling full bill amount off also clears the hidden tax value`() {
+    fun `toggling full bill amount off restores the tax value`() {
         val s = state(subtotal = "100", tax = "8", fullBill = true, tipMode = TipMode.Pct(20.0))
         val toggled = TipCalculator.onToggleFullBillAmount(s)
         assertTrue(!toggled.useFullBillAmount)
-        assertEquals("", toggled.taxInput)
+        assertEquals("8", toggled.taxInput)
+    }
+
+    @Test
+    fun `toggling full bill amount recalculates tip and grand total live`() {
+        val on = state(subtotal = "100", tax = "8", fullBill = true, tipMode = TipMode.Pct(20.0))
+        val off = on.copy(useFullBillAmount = false)
+        val onTotals = TipCalculator.calculate(on)
+        val offTotals = TipCalculator.calculate(off)
+        // On: tip = (100+8) * 20% = 21.6. Off: tip = 100 * 20% = 20.0 — different, not frozen.
+        assertEquals(21.6, onTotals.tip, 0.001)
+        assertEquals(20.0, offTotals.tip, 0.001)
     }
 
     // --- Split ---
