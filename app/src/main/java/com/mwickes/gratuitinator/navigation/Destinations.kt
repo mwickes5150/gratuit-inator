@@ -3,14 +3,17 @@ package com.mwickes.gratuitinator.navigation
 import android.net.Uri
 
 /**
- * Navigable destinations. Split is intentionally not wired in yet (deferred, lower priority
- * than receipt scanning); Review is reachable only from Scan, never a bottom-nav tab.
+ * Navigable destinations. Review is reachable only from Scan, never a bottom-nav tab.
  */
 sealed interface Destination {
     val route: String
 
     data object Main : Destination {
         override val route = "main"
+    }
+
+    data object Split : Destination {
+        override val route = "split"
     }
 
     data object Scan : Destination {

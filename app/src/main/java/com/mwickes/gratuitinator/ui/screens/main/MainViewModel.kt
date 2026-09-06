@@ -76,6 +76,15 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    /** Split people-count controls, floored at 1 (no upper ceiling). */
+    fun incrementPeople() {
+        _state.value = _state.value.copy(peopleCount = _state.value.peopleCount + 1)
+    }
+
+    fun decrementPeople() {
+        _state.value = _state.value.copy(peopleCount = (_state.value.peopleCount - 1).coerceAtLeast(1))
+    }
+
     /** Current tip-mode percentage for slider/chip display: the live [TipMode.Pct] value, or the calculated implied % while in [TipMode.Abs]. */
     fun currentPctForDisplay(): Double = when (val mode = _state.value.tipMode) {
         is TipMode.Pct -> mode.pct
