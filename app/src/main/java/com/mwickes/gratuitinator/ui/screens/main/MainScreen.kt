@@ -72,20 +72,6 @@ fun MainScreen(
                 .padding(start = 18.dp, end = 18.dp, top = 20.dp, bottom = 18.dp),
             verticalArrangement = Arrangement.spacedBy(13.dp),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = "GRATUIT-INATOR",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 11.sp,
-                    letterSpacing = 1.sp,
-                    color = tape.dim,
-                )
-            }
-            DashedDivider(color = tape.rule)
-
             AmountRow(label = "SUBTOTAL", dim = tape.dim) {
                 TapeAmountField(
                     value = state.subtotalInput,
