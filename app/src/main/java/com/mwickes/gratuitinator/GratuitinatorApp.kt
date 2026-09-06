@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,11 +47,12 @@ import com.mwickes.gratuitinator.ui.theme.TapeColors
 import kotlinx.coroutines.delay
 
 /**
- * Top-level app composable: a header (title + paper/steel toggle) over a NavHost, with a minimal
- * Bill/Scan bottom bar. [MainViewModel] is owned here (once) and shared across destinations so
- * screens like Review can commit into the same bill state Main displays. Full pixel-accurate
- * Bill/Split/Scan bottom-nav polish is deferred — today's bar only reaches Bill/Scan (Review is
- * reachable only from Scan, not a tab), and Split isn't wired in yet.
+ * Top-level app composable: a header (title + paper/steel toggle) over a NavHost, with a flat
+ * Bill/Split/Scan bottom nav bar matching the mockup. [MainViewModel] is owned here (once) and
+ * shared across destinations so screens like Review and Split can commit into / read the same
+ * bill state Main displays. (Review is reachable only from Scan, not a bottom-nav tab; the
+ * mockup's "TIP US" donation-link tab is a deprioritized future enhancement — see
+ * DEVELOPMENT_PLAN.md.)
  */
 @Composable
 fun GratuitinatorApp() {
@@ -134,6 +136,13 @@ private fun GratuitinatorContent(
             )
 
             val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+            fun navigateToTab(destination: Destination) {
+                navController.navigate(destination.route) {
+                    popUpTo(Destination.Main.route) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,25 +152,19 @@ private fun GratuitinatorContent(
                     label = "BILL",
                     selected = currentRoute == Destination.Main.route,
                     tape = tape,
-                    onClick = {
-                        navController.navigate(Destination.Main.route) {
-                            popUpTo(Destination.Main.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
+                    onClick = { navigateToTab(Destination.Main) },
+                )
+                BottomTab(
+                    label = "SPLIT",
+                    selected = currentRoute == Destination.Split.route,
+                    tape = tape,
+                    onClick = { navigateToTab(Destination.Split) },
                 )
                 BottomTab(
                     label = "SCAN",
                     selected = currentRoute == Destination.Scan.route,
                     tape = tape,
-                    onClick = {
-                        navController.navigate(Destination.Scan.route) {
-                            popUpTo(Destination.Main.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
+                    onClick = { navigateToTab(Destination.Scan) },
                 )
             }
         }
@@ -179,15 +182,16 @@ private fun RowScope.BottomTab(
         text = label,
         fontFamily = FontFamily.Monospace,
         fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-        fontSize = 12.sp,
-        letterSpacing = 0.5.sp,
-        color = if (selected) tape.accent else tape.dim,
+        fontSize = 11.sp,
+        letterSpacing = 1.sp,
+        color = if (selected) tape.stepFg else tape.dim,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .weight(1f)
-            .defaultMinSize(minHeight = 44.dp)
+            .defaultMinSize(minHeight = 56.dp)
+            .background(if (selected) tape.stepBg else Color.Transparent)
             .clickable(onClick = onClick)
-            .padding(vertical = 12.dp),
+            .wrapContentSize(Alignment.Center),
     )
 }
 

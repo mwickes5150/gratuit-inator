@@ -21,6 +21,7 @@ import com.mwickes.gratuitinator.ui.screens.review.ReviewScreen
 import com.mwickes.gratuitinator.ui.screens.review.ReviewViewModel
 import com.mwickes.gratuitinator.ui.screens.scan.ScanScreen
 import com.mwickes.gratuitinator.ui.screens.scan.ScanViewModel
+import com.mwickes.gratuitinator.ui.screens.split.SplitScreen
 
 /**
  * Top-level nav graph. [mainViewModel] is owned once by the caller (GratuitinatorApp) and shared
@@ -39,6 +40,10 @@ fun GratuitinatorNavGraph(
     ) {
         composable(Destination.Main.route) {
             MainScreen(viewModel = mainViewModel, modifier = Modifier.fillMaxSize())
+        }
+
+        composable(Destination.Split.route) {
+            SplitScreen(viewModel = mainViewModel, modifier = Modifier.fillMaxSize())
         }
 
         composable(Destination.Scan.route) {
