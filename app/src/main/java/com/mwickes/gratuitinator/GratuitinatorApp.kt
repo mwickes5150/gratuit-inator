@@ -1,10 +1,13 @@
 package com.mwickes.gratuitinator
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,24 +24,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mwickes.gratuitinator.ui.screens.main.MainScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.mwickes.gratuitinator.navigation.Destination
+import com.mwickes.gratuitinator.navigation.GratuitinatorNavGraph
 import com.mwickes.gratuitinator.ui.screens.main.MainViewModel
 import com.mwickes.gratuitinator.ui.theme.GratuitinatorTheme
 import com.mwickes.gratuitinator.ui.theme.LocalTapeColors
+import com.mwickes.gratuitinator.ui.theme.TapeColors
 
 /**
- * Top-level app composable: a header (title + paper/steel toggle) over the Bill screen.
- * The Scaffold + NavHost with bottom nav (Bill/Split/Scan) lands in Phase 4; for now
- * [MainScreen] is hosted directly as the only screen.
+ * Top-level app composable: a header (title + paper/steel toggle) over a NavHost, with a minimal
+ * Bill/Scan bottom bar. [MainViewModel] is owned here (once) and shared across destinations so
+ * screens like Review can commit into the same bill state Main displays. Full pixel-accurate
+ * Bill/Split/Scan bottom-nav polish is deferred — today's bar only reaches Bill/Scan (Review is
+ * reachable only from Scan, not a tab), and Split isn't wired in yet.
  */
 @Composable
 fun GratuitinatorApp() {
     val systemDark = isSystemInDarkTheme()
     var darkSteel by remember { mutableStateOf(systemDark) }
+    val mainViewModel: MainViewModel = viewModel()
 
     GratuitinatorTheme(darkSteel = darkSteel) {
         val tape = LocalTapeColors.current
@@ -68,11 +79,70 @@ fun GratuitinatorApp() {
                     }
                 }
 
-                val mainViewModel: MainViewModel = viewModel()
-                MainScreen(viewModel = mainViewModel, modifier = Modifier.fillMaxSize())
+                val navController = rememberNavController()
+                GratuitinatorNavGraph(
+                    navController = navController,
+                    mainViewModel = mainViewModel,
+                    modifier = Modifier.weight(1f).fillMaxSize(),
+                )
+
+                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(tape.cardBg),
+                ) {
+                    BottomTab(
+                        label = "BILL",
+                        selected = currentRoute == Destination.Main.route,
+                        tape = tape,
+                        onClick = {
+                            navController.navigate(Destination.Main.route) {
+                                popUpTo(Destination.Main.route) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                    )
+                    BottomTab(
+                        label = "SCAN",
+                        selected = currentRoute == Destination.Scan.route,
+                        tape = tape,
+                        onClick = {
+                            navController.navigate(Destination.Scan.route) {
+                                popUpTo(Destination.Main.route) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun RowScope.BottomTab(
+    label: String,
+    selected: Boolean,
+    tape: TapeColors,
+    onClick: () -> Unit,
+) {
+    Text(
+        text = label,
+        fontFamily = FontFamily.Monospace,
+        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.5.sp,
+        color = if (selected) tape.accent else tape.dim,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .weight(1f)
+            .defaultMinSize(minHeight = 44.dp)
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp),
+    )
 }
 
 @Preview(showBackground = true)
